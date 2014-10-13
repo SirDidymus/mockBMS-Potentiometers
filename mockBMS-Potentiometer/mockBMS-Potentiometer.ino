@@ -1,6 +1,8 @@
 // Global Constants
-const int numBats = 6;
-const int averages = 100;
+const int NUMB_BATTERIES = 6;
+const int NUM_NUM_AVERAGES= 100;
+const int MIN_VOLTAGE = 2.9;
+const int MAX_VOLTAGE = 4.3;
 
 int getAvgVolt(float voltage[], int bat);
 
@@ -18,7 +20,7 @@ void setup() {
 }
 
 void loop() {
-  float curVolt[numBats * averages];
+  float curVolt[NUMB_BATTERIES * NUM_AVERAGES];
   int avgVolt;
   // Reads in votage
   int batSensor0 = analogRead(A0);
@@ -28,19 +30,19 @@ void loop() {
   int batSensor4 = analogRead(A4);
   int batSensor5 = analogRead(A5);
   
-  for(int i = 0; i < averages; i++) {
+  for(int i = 0; i < NUM_AVERAGES; i++) {
     // Converting integer value from analogRead into voltage
-    // Grabbing 100 values for each battery before averages
+    // Grabbing 100 values for each battery before NUM_AVERAGES
     curVolt[i] = batSensor0 * (5.0 / 1023.0);                // Battery 0
-    curVolt[i+(averages*1)] = batSensor1 * (5.0 / 1023.0);   // Battery 1
-    curVolt[i+(averages*2)] = batSensor2 * (5.0 / 1023.0);   // Battery 2
-    curVolt[i+(averages*3)] = batSensor3 * (5.0 / 1023.0);   // Battery 3
-    curVolt[i+(averages*4)] = batSensor4 * (5.0 / 1023.0);   // Battery 4
-    curVolt[i+(averages*5)] = batSensor5 * (5.0 / 1023.0);   // Battery 5
+    curVolt[i+(NUM_AVERAGES*1)] = batSensor1 * (5.0 / 1023.0);   // Battery 1
+    curVolt[i+(NUM_AVERAGES*2)] = batSensor2 * (5.0 / 1023.0);   // Battery 2
+    curVolt[i+(NUM_AVERAGES*3)] = batSensor3 * (5.0 / 1023.0);   // Battery 3
+    curVolt[i+(NUM_AVERAGES*4)] = batSensor4 * (5.0 / 1023.0);   // Battery 4
+    curVolt[i+(NUM_AVERAGES*5)] = batSensor5 * (5.0 / 1023.0);   // Battery 5
   }
   
   // Averaging 100 voltages for each battery
-  for(int i = 0; i < numBats; i++) {
+  for(int i = 0; i < ; i++) {
     avgVolt = getAvgVolt(curVolt, i);
     
     // Printing average voltage through serial
@@ -48,7 +50,7 @@ void loop() {
     Serial.print(i + " is ");
     Serial.println(avgVolt);
     // Checking average voltage to make sure it is within acceptable parameters
-    if(avgVolt < 2.9 || avgVolt > 4.3) {
+    if(avgVolt < MIN_VOLTAGE || avgVolt > MAX_VOLTAGE) {
       // If not acceptable, "kill"
       digitalWrite(i + 2, HIGH);
     }
@@ -63,12 +65,12 @@ int getAvgVolt(float voltage[], int bat) {
   float runningSum;
   
   // Finding running sum of all voltages for a particular battery
-  for(int i = 0; i < averages; i++) {
-    runningSum += voltage[i+(averages*bat)];
+  for(int i = 0; i < NUM_AVERAGES; i++) {
+    runningSum += voltage[i+(NUM_AVERAGES*bat)];
   }
   
   // Calculating average voltage
-  avgVoltage = runningSum / averages;
+  avgVoltage = runningSum / NUM_AVERAGES;
   
   return avgVoltage; 
 }
