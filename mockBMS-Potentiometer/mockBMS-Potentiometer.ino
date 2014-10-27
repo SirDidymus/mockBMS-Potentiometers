@@ -1,6 +1,6 @@
 // Global Constants
-const int NUMB_BATTERIES = 6;
-const int NUM_NUM_AVERAGES= 100;
+const int NUM_BATTERIES = 6;
+const int NUM_AVERAGES= 100;
 const int MIN_VOLTAGE = 2.9;
 const int MAX_VOLTAGE = 4.3;
 
@@ -20,7 +20,8 @@ void setup() {
 }
 
 void loop() {
-  float curVolt[NUMB_BATTERIES * NUM_AVERAGES];
+  Serial.print("Test");
+  float curVolt[NUM_BATTERIES * NUM_AVERAGES];
   int avgVolt;
   // Reads in votage
   int batSensor0 = analogRead(A0);
@@ -42,7 +43,7 @@ void loop() {
   }
   
   // Averaging 100 voltages for each battery
-  for(int i = 0; i < ; i++) {
+  for(int i = 0; i < NUM_BATTERIES;i++) {
     avgVolt = getAvgVolt(curVolt, i);
     
     // Printing average voltage through serial
